@@ -197,12 +197,12 @@ export default function Home() {
     <div className="grid gap-8 md:grid-cols-3 text-left">
       <div className="bg-amber-100/50 p-6 rounded-xl shadow">
         <h3 className="font-semibold text-lg mb-2">📧 Email</h3>
-        <p className="break-all text-[#78350f]">your-email@example.com</p>
+        <p className="break-all text-[#78350f]">purefarmdung@gmail.com</p>
       </div>
 
       <div className="bg-amber-100/50 p-6 rounded-xl shadow">
         <h3 className="font-semibold text-lg mb-2">📱 WhatsApp</h3>
-        <p className="text-[#78350f]">+91 98765 43210</p>
+        <p className="text-[#78350f]">+91 80747 58938 | +44 75875 43911</p>
       </div>
 
       <div className="bg-amber-100/50 p-6 rounded-xl shadow">
