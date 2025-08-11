@@ -52,7 +52,7 @@ export default function Home() {
       <div>
         <h2 className="text-3xl font-bold text-green-900 mb-4">Get in Touch</h2>
         <p className="text-gray-700 mb-6">
-          Interested in our premium cow dung products? Fill out this form and we'll contact you with more
+          Interested in our premium cow dung products? Fill out this form and we&apos;ll contact you with more
           information on pricing, shipping, and product specifications.
         </p>
 
