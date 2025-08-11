@@ -284,7 +284,7 @@ export default function Home() {
   <h3 className="text-3xl font-bold text-[#2c4a0f] mb-8 uppercase tracking-wide">About Us</h3>
   <div className="bg-green-50 rounded-lg shadow-lg p-8 max-w-3xl mx-auto text-gray-700 leading-relaxed">
     <p className="mb-6">
-      I’m Avinash, the founder of <strong>PureFarmDung</strong>, a division of <strong>Abhi Groups Pvt. Ltd.</strong> After completing my MSc in Management in the UK, I launched this company to bridge India’s rich agricultural resources with global eco-friendly needs.
+      I&apos;m Avinash, the founder of <strong>PureFarmDung</strong>, a division of <strong>Abhi Groups Pvt. Ltd.</strong> After completing my MSc in Management in the UK, I launched this company to bridge India’s rich agricultural resources with global eco-friendly needs.
     </p>
     <p>
       Headquartered in Warangal, Telangana, we specialize in exporting organic cow dung for agriculture, composting, and spiritual use — backed by international standards and transparency.
