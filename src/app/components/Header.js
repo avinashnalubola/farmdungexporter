@@ -11,7 +11,7 @@ export default function Header() {
       <div className="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
         {/* Logo */}
         <a href="#hero" className="text-2xl font-bold text-[#2c4a0f]">
-          Pure Farm Dung
+          Farm Dung Exporter
         </a>
 
         {/* Desktop Menu */}

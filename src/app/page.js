@@ -15,12 +15,12 @@ export default function Home() {
   {/* Background Image */}
   <div className="absolute inset-0 z-0 animate-zoomSlow">
     <Image
-      src="/images/hero-cow-v2.jpg"
-      alt="Hero Cow"
-      fill
-      className="object-cover object-center"
-      priority
-    />
+  src="/images/hero-cow-v2.jpg"
+  alt="Hero Cow"
+  fill
+  className="object-cover object-right sm:object-center scale-180 sm:scale-100"
+  priority
+/>
   </div>
 
   {/* Dark Overlay */}
@@ -284,7 +284,7 @@ export default function Home() {
   <h3 className="text-3xl font-bold text-[#2c4a0f] mb-8 uppercase tracking-wide">About Us</h3>
   <div className="bg-green-50 rounded-lg shadow-lg p-8 max-w-3xl mx-auto text-gray-700 leading-relaxed">
     <p className="mb-6">
-      I&apos;m Avinash, the founder of <strong>PureFarmDung</strong>, a division of <strong>Abhi Groups Pvt. Ltd.</strong> After completing my MSc in Management in the UK, I launched this company to bridge India’s rich agricultural resources with global eco-friendly needs.
+      I&apos;m Avinash, the founder of <strong>Farm Dung Exporter</strong>, a division of <strong>Abhi Groups Pvt. Ltd.</strong> After completing my MSc in Management in the UK, I launched this company to bridge India’s rich agricultural resources with global eco-friendly needs.
     </p>
     <p>
       Headquartered in Warangal, Telangana, we specialize in exporting organic cow dung for agriculture, composting, and spiritual use — backed by international standards and transparency.
@@ -425,7 +425,7 @@ export default function Home() {
   <div className="max-w-7xl mx-auto px-6 py-12 grid grid-cols-1 md:grid-cols-3 gap-12">
     {/* About / Brand + Social */}
     <div>
-      <h3 className="text-xl font-bold mb-4">Pure Farm Dung</h3>
+      <h3 className="text-xl font-bold mb-4">Farm Dung Exporter</h3>
       <p className="text-gray-300 leading-relaxed">
         Delivering pure, organic cow dung products globally with trust, quality, and sustainability at heart.
       </p>
