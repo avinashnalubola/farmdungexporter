@@ -1,10 +1,46 @@
-'use client';
+"use client";
+import React, { useState } from "react";
 
 import Image from "next/image";
 import Header from './components/Header';
 import Products from "@/components/Products";
 
 export default function Home() {
+  const [sending, setSending] = useState(false);
+const [status, setStatus] = useState(null);
+
+async function handleSubmit(e) {
+  e.preventDefault();
+  setStatus(null);
+  setSending(true);
+
+  const form = e.currentTarget;
+  const fd = new FormData(form);
+
+  const products = fd.getAll("products");
+  const payload = Object.fromEntries(fd.entries());
+  payload.products = products;
+
+  try {
+    const res = await fetch("/api/contact", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+    });
+
+    const data = await res.json(); // ✅ Parse JSON response
+
+    if (!res.ok) throw new Error(data.error || "Request failed");
+
+    setStatus("success");
+    form.reset();
+  } catch (err) {
+    console.error("❌ Request failed:", err);
+    setStatus("error");
+  } finally {
+    setSending(false);
+  }
+}
   return (
     <main className="min-h-screen bg-white text-[#422006] font-sans scroll-smooth">
       <Header />
@@ -75,70 +111,93 @@ export default function Home() {
       {/* Right Column - Request Information Form */}
 <div>
   <h3 className="text-2xl font-bold text-green-900 mb-4">Request Information</h3>
-  <form className="space-y-4">
-    <div>
-      <input
-        type="text"
-        placeholder="Full Name"
-        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-green-500"
-      />
-    </div>
+  <form className="space-y-4" onSubmit={handleSubmit}>
+  {/* Honeypot (hidden) */}
+  <input type="text" name="company" className="hidden" tabIndex={-1} autoComplete="off" />
 
-    {/* Email + Phone in same row */}
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-      <input
-        type="email"
-        placeholder="Email"
-        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-green-500"
-      />
-      <input
-        type="tel"
-        placeholder="Phone Number"
-        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-green-500"
-      />
-    </div>
-
-    <div>
-      <input
-        type="text"
-        placeholder="Country"
-        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-green-500"
-      />
-    </div>
-    {/* Product Selection - Checkboxes in Row */}
-<div>
-  <label className="block text-sm font-medium text-gray-700 mb-2">
-    Select Product(s)
-  </label>
-  <div className="flex flex-wrap gap-6">
-    <label className="flex items-center space-x-2">
-      <input type="checkbox" name="products" value="Cow Dung Cake" className="text-green-600" />
-      <span>Cow Dung Cake</span>
-    </label>
-    <label className="flex items-center space-x-2">
-      <input type="checkbox" name="products" value="Cow Dung Powder" className="text-green-600" />
-      <span>Cow Dung Powder</span>
-    </label>
-    <label className="flex items-center space-x-2">
-      <input type="checkbox" name="products" value="Cow Dung Compost" className="text-green-600" />
-      <span>Cow Dung Compost</span>
-    </label>
+  <div>
+    <input
+      type="text"
+      name="fullName"
+      placeholder="Full Name"
+      required
+      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-green-500"
+    />
   </div>
-</div>
-    <div>
-      <textarea
-        placeholder="Message"
-        rows="4"
-        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-green-500"
-      ></textarea>
+
+  {/* Email + Phone in same row */}
+  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+    <input
+      type="email"
+      name="email"
+      placeholder="Email"
+      required
+      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-green-500"
+    />
+    <input
+      type="tel"
+      name="phone"
+      placeholder="Phone Number"
+      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-green-500"
+    />
+  </div>
+
+  <div>
+    <input
+      type="text"
+      name="country"
+      placeholder="Country"
+      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-green-500"
+    />
+  </div>
+
+  {/* Product Selection - Checkboxes in Row */}
+  <div>
+    <label className="block text-sm font-medium text-gray-700 mb-2">
+      Select Product(s)
+    </label>
+    <div className="flex flex-wrap gap-6">
+      <label className="flex items-center space-x-2">
+        <input type="checkbox" name="products" value="Cow Dung Cake" className="text-green-600" />
+        <span>Cow Dung Cake</span>
+      </label>
+      <label className="flex items-center space-x-2">
+        <input type="checkbox" name="products" value="Cow Dung Powder" className="text-green-600" />
+        <span>Cow Dung Powder</span>
+      </label>
+      <label className="flex items-center space-x-2">
+        <input type="checkbox" name="products" value="Cow Dung Compost" className="text-green-600" />
+        <span>Cow Dung Compost</span>
+      </label>
     </div>
-    <button
-      type="submit"
-      className="w-full bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition"
-    >
-      Submit
-    </button>
-  </form>
+  </div>
+
+  <div>
+    <textarea
+      name="message"
+      placeholder="Message"
+      rows={4}
+      required
+      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-green-500"
+    />
+  </div>
+
+  {/* Submit + status */}
+  <button
+    type="submit"
+    disabled={sending}
+    className={`w-full bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition ${sending ? "opacity-60 cursor-not-allowed" : ""}`}
+  >
+    {sending ? "Sending..." : "Submit"}
+  </button>
+
+  {status === "success" && (
+    <p className="text-green-700 text-sm pt-2">Thanks! Your message has been sent.</p>
+  )}
+  {status === "error" && (
+    <p className="text-red-600 text-sm pt-2">Sorry, something went wrong. Please try again.</p>
+  )}
+</form>
 </div>
 
     </div>
@@ -280,15 +339,76 @@ export default function Home() {
 
         {/* Gallery Section */}
         {/* About Us */}
-<section id="about" className="py-20 px-6 max-w-4xl mx-auto text-center">
-  <h3 className="text-3xl font-bold text-[#2c4a0f] mb-8 uppercase tracking-wide">About Us</h3>
-  <div className="bg-green-50 rounded-lg shadow-lg p-8 max-w-3xl mx-auto text-gray-700 leading-relaxed">
+<section id="about" className="py-20 px-6 max-w-6xl mx-auto">
+  <h3 className="text-3xl font-bold text-[#2c4a0f] mb-12 text-center uppercase tracking-wide">
+    About Us
+  </h3>
+
+  {/* Intro */}
+  <div className="bg-green-50 rounded-lg shadow-lg p-8 text-gray-700 leading-relaxed mb-12">
     <p className="mb-6">
-      I&apos;m Avinash, the founder of <strong>Farm Dung Exporter</strong>, a division of <strong>Abhi Groups Pvt. Ltd.</strong> After completing my MSc in Management in the UK, I launched this company to bridge India’s rich agricultural resources with global eco-friendly needs.
+      I&apos;m <strong>Avinash Nalubola</strong>, Founder of <strong>Farm Dung Exporter</strong>, 
+      a division of <strong>Abhi Groups Pvt. Ltd.</strong>, co-founded with <strong>Prem Kumar Reddy Sandi</strong>. 
+      After completing my MSc in Management in the UK, I returned to India with a clear mission: 
+      to bring global recognition to one of our most traditional yet undervalued natural resources — 
+      organic cow and buffalo dung.
+    </p>
+    <p className="mb-6">
+      Headquartered in Warangal, Telangana (India) and operating internationally from London, United Kingdom (E16 1FH), 
+      Farm Dung Exporter specializes in the export of 100% pure, organic cow and buffalo dung for agricultural use, 
+      composting, and spiritual practices. 
     </p>
     <p>
-      Headquartered in Warangal, Telangana, we specialize in exporting organic cow dung for agriculture, composting, and spiritual use — backed by international standards and transparency.
+      Together, Prem and I are proud to lead a company that stays true to our roots while embracing modern innovation — 
+      delivering trusted, eco-friendly products that reconnect the world with India’s natural resources and promote 
+      sustainable farming for a better tomorrow.
     </p>
+  </div>
+
+  {/* Vision, Mission, Commitment, Certifications */}
+  <div className="grid md:grid-cols-2 gap-8">
+    {/* Vision */}
+    <div className="bg-white border-l-4 border-green-600 rounded-lg shadow-md p-8">
+      <h4 className="text-xl font-bold text-[#2c4a0f] mb-4 uppercase">Our Vision</h4>
+      <p className="text-gray-700 leading-relaxed">
+        To become a global leader in organic and sustainable agricultural products by reconnecting 
+        the world with India’s natural resources — fostering a future where traditional farming, 
+        environmental responsibility, and modern innovation work hand in hand to create lasting 
+        positive impact.
+      </p>
+    </div>
+
+    {/* Mission */}
+    <div className="bg-white border-l-4 border-green-600 rounded-lg shadow-md p-8">
+      <h4 className="text-xl font-bold text-[#2c4a0f] mb-4 uppercase">Our Mission</h4>
+      <p className="text-gray-700 leading-relaxed">
+        To deliver pure, eco-friendly, and reliable organic products to customers across the globe — 
+        while upholding the highest standards of quality, supporting rural livelihoods, and promoting 
+        sustainable agricultural practices for a better tomorrow.
+      </p>
+    </div>
+
+    {/* Commitment */}
+    <div className="bg-white border-l-4 border-green-600 rounded-lg shadow-md p-8">
+      <h4 className="text-xl font-bold text-[#2c4a0f] mb-4 uppercase">Our Commitment</h4>
+      <p className="text-gray-700 leading-relaxed">
+        We source our products directly from trusted local farmers, ensuring the dung is fresh, 
+        chemical-free, and naturally collected.  
+        This model supports rural livelihoods and strengthens traditional farming communities.  
+        We follow strict hygiene protocols and quality control processes, maintaining 
+        international export standards.
+      </p>
+    </div>
+
+    {/* Certifications */}
+    <div className="bg-white border-l-4 border-green-600 rounded-lg shadow-md p-8">
+      <h4 className="text-xl font-bold text-[#2c4a0f] mb-4 uppercase">Certifications & Quality</h4>
+      <p className="text-gray-700 leading-relaxed">
+         Products tested for purity and quality before shipment  
+         Compliant with relevant organic and export regulations  
+         Transparent supply chain with traceability back to the source  
+      </p>
+    </div>
   </div>
 </section>
 
@@ -399,8 +519,8 @@ export default function Home() {
     </li>
     <li>
       <strong>Email:</strong><br />
-      <a href="mailto:purefarmdung@gmail.com" className="text-[#2c4a0f] hover:underline">
-        purefarmdung@gmail.com
+      <a href="mailto:farmdungexpoter@gmail.com" className="text-[#2c4a0f] hover:underline">
+        farmdungexpoter@gmail.com
       </a>
     </li>
   </ul>
@@ -476,7 +596,7 @@ export default function Home() {
         </li>
         <li>
           <strong>Email:</strong><br />
-          <a href="mailto:purefarmdung@gmail.com" className="hover:text-green-400 transition">purefarmdung@gmail.com</a>
+          <a href="mailto:farmdungexpoter@gmail.com" className="hover:text-green-400 transition">farmdungexpoter@gmail.com</a>
         </li>
       </ul>
     </div>
