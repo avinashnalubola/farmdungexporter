@@ -429,12 +429,40 @@ async function handleSubmit(e) {
     <div className="bg-green-50 rounded-lg p-6 shadow-md text-gray-700">
   <h4 className="text-xl font-semibold mb-6 text-[#2c4a0f]">Get in Touch</h4>
   <form
-    className="space-y-6"
-    onSubmit={(e) => {
-      e.preventDefault();
-      alert('Form submitted!');
-    }}
-  >
+  className="space-y-6"
+  onSubmit={async (e) => {
+    e.preventDefault();
+
+    const formData = new FormData(e.currentTarget);
+    const data = {
+      company: formData.get("company") || "", // if you want company field
+      fullName: formData.get("name"),
+      email: formData.get("email"),
+      phone: formData.get("phone"),
+      country: formData.get("country") || "", // if you add country later
+      products: [], // can be updated if you add product checkboxes
+      message: formData.get("message"),
+    };
+
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
+
+      if (res.ok) {
+        alert("✅ Message sent successfully!");
+        e.currentTarget.reset();
+      } else {
+        alert("❌ Failed to send message.");
+      }
+    } catch (err) {
+      console.error(err);
+      alert("⚠️ Something went wrong.");
+    }
+  }}
+>
         <div>
           <label htmlFor="name" className="block text-gray-700 font-medium mb-2">
             Name
